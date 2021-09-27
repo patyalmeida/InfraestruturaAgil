@@ -84,20 +84,7 @@ pipeline {
           steps{
             sh "docker rmi $registry:$BUILD_NUMBER"
           }
-        }
-        
-       stage('Pull imagem') {
-            steps {
-                script{
-                    def urlImage = "http://34.125.87.11:2375/images/create?fromImage=brunourb/spring-mvc-thymeleaf";
-                    def response = httpRequest url:"${urlImage}", httpMode:'POST', acceptType: 'APPLICATION_JSON', validResponseCodes:"200"
-                    println("Status: " + response.status)
-                    def pretty_json = writeJSON( returnText: true, json: response.content)
-                    println pretty_json
-                    
-                }
-            }
-        }
+        }       
         
        stage('Criar container') {
             steps {
