@@ -84,31 +84,44 @@ pipeline {
           steps{
             sh "docker rmi $registry:$BUILD_NUMBER"
           }
-        }       
+        }      
+
+		stage('Pull imagem') {
+            steps {
+                script{
+                    def urlImage = "http://34.125.87.11:2375/images/create?fromImage=brunourb/spring-mvc-thymeleaf";
+                    //def response = httpRequest url:"${urlImage}", httpMode:'POST', acceptType: 'APPLICATION_JSON', validResponseCodes:"200"
+                    //println("Status: " + response.status)
+                    //def pretty_json = writeJSON( returnText: true, json: response.content)
+                    //println pretty_json
+                    
+                }
+            }
+        }		
         
-       stage('Criar container') {
+        stage('Criar container') {
             steps {
                 script{
                     configFileProvider([configFile(fileId: '0d7d58cc-3e47-4be9-af81-f99b951f7392', targetLocation: 'container.json')]) {
 
-                        def url = "http://34.125.87.11:2375/containers/thymeleaf?force=true"
-                        def response = sh(script: "curl -v -X DELETE $url", returnStdout: true).trim()
-                        echo response
+                        //def url = "http://34.125.87.11:2375/containers/thymeleaf?force=true"
+                        //def response = sh(script: "curl -v -X DELETE $url", returnStdout: true).trim()
+                        //echo response
 
                         url = "http://34.125.87.11:2375/containers/create?name=thymeleaf"
-                        response = sh(script: "curl -v -X POST -H 'Content-Type: application/json' -d @container.json -s $url", returnStdout: true).trim()
-                        echo response
+                        //response = sh(script: "curl -v -X POST -H 'Content-Type: application/json' -d @container.json -s $url", returnStdout: true).trim()
+                        // echo response
                     }
                 }
             }
         }        
         
-       stage('Disponibilizar serviço dev') {
+        stage('Disponibilizar serviço dev') {
             steps {
                 script{
                     final String url = "http://34.125.87.11:2375/containers/thymeleaf/start"
-                    final String response = sh(script: "curl -v -X POST -s $url", returnStdout: true).trim()
-                    echo response                    
+                    //final String response = sh(script: "curl -v -X POST -s $url", returnStdout: true).trim()
+                    //echo response                    
                 }
             }
         }           
