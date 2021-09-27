@@ -84,16 +84,18 @@ pipeline {
           steps{
             sh "docker rmi $registry:$BUILD_NUMBER"
           }
-        }       
+        }      
+
+		
         
-       stage('Criar container') {
+        stage('Criar container') {
             steps {
                 script{
                     configFileProvider([configFile(fileId: '0d7d58cc-3e47-4be9-af81-f99b951f7392', targetLocation: 'container.json')]) {
 
-                        def url = "http://34.125.87.11:2375/containers/thymeleaf?force=true"
-                        def response = sh(script: "curl -v -X DELETE $url", returnStdout: true).trim()
-                        echo response
+                        //def url = "http://34.125.87.11:2375/containers/thymeleaf?force=true"
+                        //def response = sh(script: "curl -v -X DELETE $url", returnStdout: true).trim()
+                        //echo response
 
                         url = "http://34.125.87.11:2375/containers/create?name=thymeleaf"
                         response = sh(script: "curl -v -X POST -H 'Content-Type: application/json' -d @container.json -s $url", returnStdout: true).trim()
